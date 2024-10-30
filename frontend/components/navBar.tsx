@@ -2,12 +2,29 @@
 import { NAV_LINKS } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./button";
+import Button from "./common/button";
 
 import { useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 const Navbar = () => {
   const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+  useEffect(() => {
+    if (token) {
+      const user = jwtDecode(token);
+      setUser(user);
+    }
+  }, [token]);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    router.push("/auth/login");
+  };
   return (
     <nav className="flexBetween max-container padding-container relative z-30 py-5">
       <Link href="/">
@@ -27,14 +44,32 @@ const Navbar = () => {
       </ul>
 
       <div className="lg:flexCenter hidden">
-        <Button
-          type="button"
-          title="ይግቡ"
-          icon="/user.svg"
-          variant="btn_dark_green"
-          handleClick={() => router.push("/auth/login")}
-          full={false}
-        />
+        {token && (
+          <Button
+            type="button"
+            title={user?.username}
+            icon="/user.svg"
+            variant="btn_green"
+            full={false}
+          />
+        )}
+        {token ? (
+          <Button
+            type="button"
+            title={"ይውጡ"}
+            variant="btn_dark_green"
+            handleClick={() => handleLogout()}
+            full={false}
+          />
+        ) : (
+          <Button
+            type="button"
+            title={"ይግቡ"}
+            variant="btn_dark_green"
+            handleClick={() => router.push("/auth/login")}
+            full={false}
+          />
+        )}
       </div>
 
       <Image

@@ -4,6 +4,7 @@ const User = require("../models/users");
 const bcrypt = require("bcrypt");
 const { check, validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+const { generateToken } = require("../utils/generateToken");
 const { ObjectId } = mongoose.Types;
 // @route    POST users/
 // @desc     Create a new user
@@ -108,8 +109,9 @@ router.post(
       if (!isMatch) {
         return res.status(400).json({ message: "የተጠቀሙት ኢሜል ወይም የይለፍ ቃል የተሳሳተ ነው።" });
       }
-
-      res.json(user);
+    
+      const token = generateToken({id:user._id,username:user.username,password:user.password,role:user.role});
+      res.json(token);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");

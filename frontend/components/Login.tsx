@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch } from "@/lib/hooks";
-import Button from "./button";
+import Button from "./common/button";
 import { login } from "@/lib/features/auth/loginSlice";
 import { useState } from "react";
 
@@ -58,6 +58,7 @@ const Login = () => {
           variant="btn_dark_green"
           full={true}
           handleClick={handleLogin}
+          
         />
 
         <p className="mt-6 text-center text-sm text-gray-600">

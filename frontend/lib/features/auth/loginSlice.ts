@@ -14,6 +14,7 @@ export const login = createAsyncThunk(
       const response = await axios.post("http://localhost:8000/users/login", {username:data.username,password: data.password});
       toast.success("በትክክል ገብተዋል።")
       data.onSuccess&&data.onSuccess();
+      localStorage.setItem("token",response.data);
       return response.data;
     } catch (error) {
       let errorMessage: string;

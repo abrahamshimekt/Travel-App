@@ -44,18 +44,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route    GET places/
-// @desc     Get all places
-// @access   Public
-router.get('/', async (req, res) => {
-  try {
-    const places = await Place.find();
-    res.json(places);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+
 
 // @route    GET places/:id
 // @desc     Get place by ID
@@ -135,6 +124,19 @@ router.delete('/:id', async (req, res) => {
     if (err.kind === 'ObjectId') {
       return res.status(404).json({ msg: 'Place not found' });
     }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET places/
+// @desc     Get all places
+// @access   Public
+router.get('/', async (req, res) => {
+  try {
+    const places = await Place.find();
+    res.json(places);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server Error');
   }
 });

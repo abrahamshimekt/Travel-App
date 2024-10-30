@@ -1,6 +1,6 @@
 "use client";
 import { useAppDispatch } from "@/lib/hooks";
-import Button from "./button";
+import Button from "./common/button";
 import { signup } from "@/lib/features/auth/signupSlice";
 import { useState } from "react";
 
